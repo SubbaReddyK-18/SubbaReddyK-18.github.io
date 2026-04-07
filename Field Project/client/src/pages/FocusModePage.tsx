@@ -95,20 +95,20 @@ export default function FocusModePage() {
       return;
     }
 
-    wallClockIntervalRef.current = window.setInterval(() => {
+wallClockIntervalRef.current = window.setInterval(() => {
       if (!isPausedRef.current) {
         wallClockRef.current += 1;
         
-        // In Tutorial Mode: always tick (trust user), EXCEPT when presence modal is open
-        if (isTutorial && !isPresenceModalOpenRef.current) {
-          verifiedFocusRef.current = Math.max(0, wallClockRef.current - presenceFailSecondsRef.current);
-        }
-        // In Open Study Mode: only tick when tab is visible AND presence modal is closed
-        else if (!isTutorial && !isTabHiddenRef.current && !isPresenceModalOpenRef.current) {
-          verifiedFocusRef.current += 1;
+        // Only tick when tab is visible AND presence modal is closed (both modes)
+        if (!isTabHiddenRef.current && !isPresenceModalOpenRef.current) {
+          if (isTutorial) {
+            verifiedFocusRef.current += 1;
+          } else {
+            verifiedFocusRef.current += 1;
+          }
         }
       }
-
+      
       nextCheckCountdownRef.current = Math.max(0, nextCheckCountdownRef.current - 1);
     }, 1000);
 
@@ -119,14 +119,12 @@ export default function FocusModePage() {
     const handleVisibilityChange = () => {
       if (document.hidden) {
         isTabHiddenRef.current = true;
-        if (!isTutorial) {
-          tabSwitchCountRef.current += 1;
-          distractionStartTimeRef.current = Date.now();
-          showRandomTabAlert();
-        }
+        tabSwitchCountRef.current += 1;
+        distractionStartTimeRef.current = Date.now();
+        showRandomTabAlert();
       } else {
         isTabHiddenRef.current = false;
-        if (!isTutorial && distractionStartTimeRef.current !== null) {
+        if (distractionStartTimeRef.current !== null) {
           distractionSecondsRef.current += (Date.now() - distractionStartTimeRef.current) / 1000;
           distractionStartTimeRef.current = null;
         }
@@ -310,15 +308,15 @@ export default function FocusModePage() {
       {isPresenceModalOpen && <PresenceModal onConfirm={handlePresenceConfirm} />}
 
       {showTabAlert && (
-        <div className="fixed top-20 left-1/2 transform -translate-x-1/2 z-50 animate-pulse">
-          <div className="bg-[var(--danger)]/90 backdrop-blur-sm rounded-2xl p-6 shadow-2xl max-w-sm mx-4 border border-[var(--danger)]">
+        <div className="fixed bottom-20 right-8 z-50 animate-pulse">
+          <div className="bg-yellow-500 backdrop-blur-sm rounded-2xl p-6 shadow-2xl max-w-sm border-2 border-yellow-300">
             <div className="flex items-start gap-4">
               <span className="text-4xl">{tabAlertMessage.emoji}</span>
               <div className="flex-1">
-                <h3 className="font-bold text-white text-lg">{tabAlertMessage.title}</h3>
-                <p className="text-white/90 text-sm mt-1">{tabAlertMessage.message}</p>
+                <h3 className="font-bold text-black text-lg">{tabAlertMessage.title}</h3>
+                <p className="text-black/80 text-sm mt-1">{tabAlertMessage.message}</p>
               </div>
-              <button onClick={handleDismissTabAlert} className="text-white/70 hover:text-white text-2xl leading-none">
+              <button onClick={handleDismissTabAlert} className="text-black/70 hover:text-black text-2xl leading-none">
                 ×
               </button>
             </div>

@@ -246,7 +246,6 @@ router.post('/analyze/:id', requireAuth, async (req: AuthRequest, res) => {
       treeStage: session.treeStage || 1,
       isTutorial: session.isTutorial,
       tutorialPlatform: session.tutorialPlatform,
-      startTime: session.startTime,
     });
 
     res.json({ analysis });

@@ -1,4 +1,4 @@
-<interface TreeSVGProps {
+interface TreeSVGProps {
   efficiency: number;
   isVisible: boolean;
 }

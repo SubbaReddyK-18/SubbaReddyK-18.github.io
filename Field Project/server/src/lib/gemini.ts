@@ -206,7 +206,7 @@ export async function classifyUrlFallback(
       reason = 'This content appears to be entertainment rather than educational';
       return { isEducational: false, platform, category: 'Entertainment', reason };
     }
-    if (educationalKeywords.some(k => urlLower.includes(k) || title.toLowerCase().includes(k))) {
+    if (educationalKeywords.some(k => urlLower.includes(k))) {
       reason = 'This appears to be educational content on YouTube';
       return { isEducational: true, platform, category: 'Video Tutorial', reason };
     }
@@ -228,12 +228,12 @@ export async function classifyUrlFallback(
     return { isEducational: true, platform, category: 'Educational', reason };
   }
 
-  if (nonEducationalKeywords.some(k => urlLower.includes(k) || title.toLowerCase().includes(k))) {
+  if (nonEducationalKeywords.some(k => urlLower.includes(k))) {
     reason = 'This content appears to be entertainment rather than educational';
     return { isEducational: false, platform: platform || 'Unknown', category: 'Non-Educational', reason };
   }
 
-  if (educationalKeywords.some(k => urlLower.includes(k) || title.toLowerCase().includes(k))) {
+  if (educationalKeywords.some(k => urlLower.includes(k))) {
     reason = 'This URL appears to contain educational content based on keywords';
     return { isEducational: true, platform: platform || 'Unknown', category: 'Educational', reason };
   }

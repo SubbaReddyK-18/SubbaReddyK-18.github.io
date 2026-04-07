@@ -83,6 +83,7 @@ export default function HomePage() {
         isTutorial,
         tutorialUrl: tutorialUrl,
         tutorialPlatform: verificationResult?.platform || '',
+        tutorialUrlVerified: verificationResult?.verified || false,
         focusDurationMinutes: selectedDuration,
       });
 
